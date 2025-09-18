@@ -136,6 +136,76 @@ class Evaluacion:
     def __del__(self):
         print(f"Evaluación {self.tipo} ha sido eliminada.")
 
+# Registrar usuario
+# Registrar usuario con validación de ID único
+def registrar_usuario():
+    tipo = input("¿Registrar instructor o estudiante? ").strip().lower()
+    if tipo not in ["estudiante", "instructor"]:
+        raise ValueError("Tipo de usuario inválido")
+
+    try:
+        id = int(input("Ingrese su ID: "))
+    except ValueError:
+        raise ValueError("Error. El ID debe ser un número entero")
+
+    # Validamos que el id no se repita en estudiantes
+    if tipo == "estudiante" and any(isinstance(u, Estudiante) and u.id == id for u in usuarios):
+        raise ValueError("Este ID ya está registrado para un estudiante")
+
+    # Validamos que el id no se repita en instructores
+    if tipo == "instructor" and any(isinstance(u, Instructor) and u.id == id for u in usuarios):
+        raise ValueError("Este ID ya está registrado para un instructor")
+
+
+    nombre = input("Ingrese su nombre: ").strip()
+    if not nombre:
+        raise ValueError("El nombre no puede estar vacío")
+
+    if tipo == "estudiante":
+        carrera = input("Ingrese su carrera: ").strip()
+        if not carrera:
+            raise ValueError("La carrera no puede estar vacía")
+        usuarios.append(Estudiante(id, nombre, carrera))
+    else:
+        titulo = input("Ingrese su título: ").strip()
+        if not titulo:
+            raise ValueError("El título no puede estar vacío")
+        usuarios.append(Instructor(id, nombre, titulo))
+
+    print(f" {tipo.capitalize()} '{nombre}' registrado correctamente.")
+
+    #Aquí se utilizan muchos raise ValueError para la eficiencia del código y de esa manera hacer validaciones eficientes y correctas.
+
+
+# Crear curso con validación de código único y profesor existente
+def crear_curso():
+    try:
+        codigo = int(input("Ingrese código del curso: "))
+    except ValueError:
+        raise ValueError("Código debe ser un número entero")
+
+    # Validamos que el codigo del curso no se repita ya que es unico con any
+    if any(c.codigo == codigo for c in cursos):
+        raise ValueError("Este código de curso ya está registrado")
+
+    nombre = input("Ingrese el nombre del curso: ").strip()
+    if not nombre:
+        raise ValueError("El nombre del curso no puede estar vacío")
+
+    try:
+        instructor_id = int(input("Ingrese el ID del docente del curso: "))
+    except ValueError:
+        raise ValueError("ID del instructor debe ser un número entero")
+
+    # Buscar instructor
+    instructor_obj = next((u for u in usuarios if isinstance(u, Instructor) and u.id == instructor_id), None) # Verificamos que el instructor no se repita en el mismo curso dos veces
+    if instructor_obj is None:
+        raise ValueError("Instructor no encontrado")
+
+    cursos.append(Curso(codigo, nombre, instructor_obj))
+    print(f" Curso '{nombre}' creado con instructor {instructor_obj.nombre}.")
+
+    
 
 
                             
