@@ -259,6 +259,90 @@ def crear_evaluaciones():
     else:
         print("No se encontró un curso con ese código.")
 
+# Registrar calificaciones
+def registrar_calificaciones():
+    try:
+        instructor_id = int(input("Ingrese su id de instructor: "))
+        # Buscar instructor
+        instructor_encontrado = None
+        for u in usuarios:
+            if isinstance(u, Instructor) and u.id == instructor_id:
+                instructor_encontrado = u
+                break
+
+        if instructor_encontrado:
+            print(f"Bienvenido al registro de calificaciones, instructor: {instructor_encontrado.nombre}")
+            codigos = []
+
+            # Mostrar cursos del instructor
+            for curso in cursos:
+                if curso.instructor == instructor_encontrado:
+                    print(curso.mostrar_info())
+                    codigos.append(curso.codigo)
+
+            codigo = int(input("Elija el código del curso en el que desea registrar una calificación: "))
+
+            if codigo in codigos:
+                curso_seleccionado = None
+                for curso in cursos:
+                    if curso.codigo == codigo:
+                        curso_seleccionado = curso
+                        break
+
+                if curso_seleccionado:
+                    # Mostrar evaluaciones del curso
+                    tipos = []
+                    for e in curso_seleccionado.evaluaciones:
+                        print(e.mostrar_info())
+                        tipos.append(e.tipo)
+
+                    evaluacion_tipo = input("Elija el tipo de evaluación que desea calificar: ").lower().strip()
+
+                    if evaluacion_tipo in tipos:
+                        evaluacion_obj = None
+                        for e in curso_seleccionado.evaluaciones:
+                            if e.tipo == evaluacion_tipo:
+                                evaluacion_obj = e
+                                break
+
+                        # Mostrar estudiantes inscritos
+                        estudiantes_inscritos = [u for u in usuarios if isinstance(u, Estudiante) and curso_seleccionado in u.cursos]
+
+                        if estudiantes_inscritos:
+                            for i, est in enumerate(estudiantes_inscritos, start=1):
+                                print(f"{i}. {est.mostrar_info()}")
+
+                            num_est = int(input("Elija el número del estudiante al que desea calificar: ")) - 1
+
+                            if 0 <= num_est < len(estudiantes_inscritos):
+                                estudiante_seleccionado = estudiantes_inscritos[num_est]
+                                calificacion = float(input("Ingrese la calificación: "))
+                                evaluacion_obj.registrar_calificacion(estudiante_seleccionado.id, calificacion)
+                                print(f" Calificación registrada para {estudiante_seleccionado.nombre} en {evaluacion_obj.tipo}.")
+                            else:
+                                print("Número de estudiante inválido.")
+                        else:
+                            print("No hay estudiantes inscritos en este curso.")
+                    else:
+                        print("Tipo de evaluación no válido.")
+            else:
+                print("No se encontró un curso con ese código.")
+        else:
+            print("Instructor no encontrado.")
+
+    except ValueError:
+        print("Error. Debe ingresar un valor numérico.")
+
+#Mostrar usuarios
+def mostrar_usuarios():
+    #Se usa polimorfismo ya que La lista usuarios puede tener tanto Estudiantes como Instructores.
+    #Ambos heredan de Usuario y sobrescriben el método mostrar_info()
+    if len(usuarios)==0:
+        print("No existen usuarios registrados")
+    else:
+        for u in usuarios:
+            print(u.nombre)
+        
 
                             
 
