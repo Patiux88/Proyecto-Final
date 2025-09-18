@@ -69,4 +69,9 @@ Crear evaluaciones para los cursos.
 Registrar calificaciones por el instructor.
 Consultar datos y generar reportes.
 
+Tabla de responsabilidades
 
+Integrante   Carnet   Tarea Asignada  Evidencia en GitHub   Fecha de Entrega Parcial    Validación Docente
+Ángel Rodas 1594125   Desarrollador   commits ya hechos            18/08/2025          
+                      Documentador
+                      Diseñador
