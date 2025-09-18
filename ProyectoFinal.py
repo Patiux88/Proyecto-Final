@@ -393,6 +393,59 @@ def consultar_calificaciones():
                             else:
                                 print(f"      -{evalua.mostrar_info()}, Sin nota")
 
+# Reporte de estudiantes con promedio bajo
+def estudiantes_promedio_bajo():
+    if len(cursos) == 0:
+        print("No hay cursos registrados.")
+        return
+
+    for curso in cursos:
+        print(f"\nCurso: {curso.mostrar_info()}")
+        estudiantes_inscritos = [u for u in usuarios if isinstance(u, Estudiante) and curso in u.cursos]
+
+        if not estudiantes_inscritos:
+            print("   No hay estudiantes inscritos en este curso.")
+            continue
+
+        if len(curso.evaluaciones) == 0:
+            print("   No hay evaluaciones registradas en este curso.")
+            continue
+
+        promedio_bajo = False
+        for est in estudiantes_inscritos:
+            notas = [
+                evalua.obtener_calificacion(est.id) * (evalua.ponderacion / 100)
+                for evalua in curso.evaluaciones
+                if evalua.obtener_calificacion(est.id) is not None
+            ]
+
+            if len(notas) > 0:
+                promedio = sum(notas)
+                if promedio <= 61:
+                    promedio_bajo = True
+                    print(f"   {est.mostrar_info()} tiene promedio bajo: {promedio:.2f}")
+
+        if not promedio_bajo:
+            print("   Ningún estudiante tiene promedio bajo en este curso.")
+
+#Agregamos eliminar usuario y curso para aplicar los destructores
+
+# Eliminar usuario
+def eliminar_usuario():
+    if not usuarios:
+        print("No hay usuarios registrados.")
+        return
+    for i, u in enumerate(usuarios, start=1):
+        print(f"{i}. {u.mostrar_info()}")
+    try:
+        num = int(input("Seleccione el usuario a eliminar: ")) - 1
+        if 0 <= num < len(usuarios):
+            u = usuarios.pop(num)
+            del u
+        else:
+            print("Número inválido.")
+    except ValueError:
+        print("Debe ingresar un número.")
 
 
 
