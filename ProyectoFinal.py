@@ -447,6 +447,81 @@ def eliminar_usuario():
     except ValueError:
         print("Debe ingresar un número.")
 
+# Eliminar curso
+def eliminar_curso():
+    if not cursos:
+        print("No hay cursos registrados.")
+        return
+    for i, c in enumerate(cursos, start=1):
+        print(f"{i}. {c.mostrar_info()}")
+    try:
+        num = int(input("Seleccione el curso a eliminar: ")) - 1
+        if 0 <= num < len(cursos):
+            c = cursos.pop(num)
+            del c
+        else:
+            print("Número inválido.")
+    except ValueError:
+        print("Debe ingresar un número.")
+
+#Menu
+while True:
+    print("\nMENÚ PRINCIPAL")
+    print("1. Registrar usuario")
+    print("2. Crear curso")
+    print("3. Inscribir estudiante en curso")
+    print("4. Crear evaluación")
+    print("5. Registrar calificaciones")
+    print("6. Consultar cursos")
+    print("7. Consultar estudiantes")
+    print("8. Consultar evaluaciones")
+    print("9. Consultar calificaciones")
+    print("10. Reporte: estudiantes con promedio bajo")
+    print("11. Eliminar usuario")
+    print("12. Eliminar curso")
+    print("13. Mostrar usuarios")
+    print("0. Salir")
+
+    try:
+        opcion = int(input("Seleccione una opción: "))
+    except ValueError:
+        print("Error: debe ingresar un número entero.")
+        continue
+
+    if opcion == 1:
+        registrar_usuario()
+    elif opcion == 2:
+        crear_curso()
+    elif opcion == 3:
+        inscribir_estudiantes()
+    elif opcion == 4:
+         crear_evaluaciones()
+    elif opcion == 5:
+         registrar_calificaciones()
+    elif opcion == 6:
+         consultar_cursos()
+    elif opcion == 7:
+         consultar_estudiantes()
+    elif opcion == 8:
+         consultar_evaluaciones()
+    elif opcion == 9:
+        consultar_calificaciones()
+    elif opcion == 10:
+        estudiantes_promedio_bajo()
+    elif opcion == 11:
+        eliminar_usuario()
+    elif opcion == 12:
+        eliminar_curso()
+    elif opcion == 13:
+        mostrar_usuarios()
+    elif opcion == 0:
+         print("Saliendo del sistema...")
+         break
+    else:
+        print("Opción inválida. Intente de nuevo.")
+
+                            
+
 
 
                             
