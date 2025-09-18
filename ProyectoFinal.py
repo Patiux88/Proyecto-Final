@@ -360,6 +360,41 @@ def consultar_estudiantes():
         for e in estudiantes_inscritos:
             print(e.mostrar_info())
 
+# Consultar evaluaciones por cursos
+def consultar_evaluaciones():
+    if len(cursos)==0:
+        print("No existen cursos creados")
+    else:
+        for i, curso in enumerate(cursos, start=1):
+            print(f"{i}. {curso.mostrar_info()}")
+            for j, e in enumerate(curso.evaluaciones, start=1):
+                print(f"    {j}. {e.mostrar_info()}")
+        
+# Consultar calificaciones por estudiante
+def consultar_calificaciones():
+    estudiantes_inscritos = [u for u in usuarios if isinstance(u, Estudiante)]
+    if len(estudiantes_inscritos) == 0:
+        print("No hay estudiantes inscritos")
+    else:
+        for est in estudiantes_inscritos:
+            print(f"\n{est.mostrar_info()}")
+            if len(est.cursos) == 0:
+                print("   No está inscrito en ningún curso.")
+            else:
+                for curso in est.cursos:
+                    print(f"   Curso: {curso.mostrar_info()}")
+                    if len(curso.evaluaciones) == 0:
+                        print("      -No hay evaluaciones registradas.")
+                    else:
+                        for evalua in curso.evaluaciones:
+                            nota = evalua.obtener_calificacion(est.id)
+                            if nota is not None:
+                                print(f"      -{evalua.mostrar_info()}, Nota: {nota}")
+                            else:
+                                print(f"      -{evalua.mostrar_info()}, Sin nota")
+
+
+
 
                             
 
