@@ -206,6 +206,58 @@ def crear_curso():
     print(f" Curso '{nombre}' creado con instructor {instructor_obj.nombre}.")
 
     
+#Inscribir estudiantes
+def inscribir_estudiantes():
+    nombre = input("Ingrese el nombre del estudiante que desea inscribir \n").lower().strip()
+    try:
+        codigo = int(input("Ingrese el código del curso en el que va a ser inscrito \n"))
+    except ValueError:
+        print("Error: el código del curso debe ser un número entero.")
+        return
+
+    # Buscamos curso
+    curso_encontrado = next((curso for curso in cursos if curso.codigo == codigo), None)
+
+    if not curso_encontrado:
+        print("No se encontró un curso con ese código.")
+        return
+
+    # Buscamos estudiante por nombre
+    estudiante_encontrado = next((usuario for usuario in usuarios if isinstance(usuario, Estudiante) and usuario.nombre.lower().strip() == nombre), None)
+    #next permite buscar el primer curso cuyo código coincida con codigo para que no se repita
+    if not estudiante_encontrado:
+        print("No se encontró un estudiante con ese nombre.")
+        return
+
+    # Verificamos si ya está inscrito en ese curso el estudiante
+    if curso_encontrado in estudiante_encontrado.cursos:
+        print(f"El estudiante {estudiante_encontrado.nombre} ya está inscrito en el curso {curso_encontrado.nombre}.")
+        return
+
+    # Inscribimos al estudiante
+    estudiante_encontrado.cursos.append(curso_encontrado)
+    print(f"Estudiante {estudiante_encontrado.nombre} ha sido inscrito en el curso {curso_encontrado.nombre} exitosamente.")
+
+# Crear evaluaciones
+def crear_evaluaciones():
+    tipo = input("Ingrese el tipo de evaluación que desea crear: \n").lower().strip()
+    ponderacion = int(input("Ingrese la ponderación de la evaluación: \n"))
+    evaluacion = Evaluacion(tipo, ponderacion)
+
+    codigo = int(input("Ingrese el código del curso en el que desea crear una evaluación: \n"))
+
+    # Buscar curso
+    curso_encontrado = None
+    for curso in cursos:
+        if codigo == curso.codigo:
+            curso_encontrado = curso
+            break
+
+    if curso_encontrado:
+        curso_encontrado.agregar_evaluacion(evaluacion)
+        print(f"Evaluación {tipo} agregada al curso {curso_encontrado.nombre}")
+    else:
+        print("No se encontró un curso con ese código.")
 
 
                             
