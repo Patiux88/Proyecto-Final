@@ -342,7 +342,24 @@ def mostrar_usuarios():
     else:
         for u in usuarios:
             print(u.nombre)
-        
+    
+# Consultar cursos
+def consultar_cursos():
+    if len(cursos)==0:
+        print("No existen cursos creados")
+    else:
+        for curso in cursos:
+            print(curso.mostrar_info())
+
+# Consultar estudiantes inscritos
+def consultar_estudiantes():
+    estudiantes_inscritos=[u for u in usuarios if isinstance(u, Estudiante)]
+    if len(estudiantes_inscritos)==0:
+        print("No hay estudiantes escritos")
+    else:
+        for e in estudiantes_inscritos:
+            print(e.mostrar_info())
+
 
                             
 
